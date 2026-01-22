@@ -1,6 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getGalleryImages } from '../utils/gallery';
+
+const galleryImages = getGalleryImages();
+
+function getLayoutClass(index) {
+  if (index === 0) return 'col-span-2 row-span-2';
+  if (index >= 1 && index <= 4) return 'col-span-1 row-span-1';
+  return 'col-span-1 row-span-1';
+}
 ---
 
 <Layout>
@@ -263,71 +271,38 @@ import { getGalleryImages } from '../utils/gallery';
 
       <!-- Responsive Gallery Collage -->
       <div class="relative">
-        {
-          (() => {
-            const galleryImages = getGalleryImages();
-            
-            // Define layout patterns for different screen sizes
-            const getLayoutClass = (index, total) => {
-              // Create a dynamic, visually interesting pattern
-              const patterns = [
-                // Large featured image
-                'col-span-2 row-span-2',
-                // Medium images
-                'col-span-1 row-span-1',
-                'col-span-1 row-span-1',
-                // Vertical image
-                'col-span-1 row-span-2',
-                // Small images
-                'col-span-1 row-span-1',
-                'col-span-1 row-span-1',
-              ];
-              
-              return patterns[index % patterns.length];
-            };
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] sm:auto-rows-[250px] lg:auto-rows-[300px] gap-3 sm:gap-4 lg:gap-6">
+          {galleryImages.map((img, index) => (
+            <div
+              class={`${getLayoutClass(index)} group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]`}
+            >
+              <img
+                src={`/gallery/${img}`}
+                alt={`Gallery image ${index + 1}`}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                loading={index < 4 ? "eager" : "lazy"}
+              />
 
-            return (
-              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] sm:auto-rows-[250px] lg:auto-rows-[300px] gap-3 sm:gap-4 lg:gap-6">
-                {galleryImages.map((img, index) => {
-                  const layoutClass = getLayoutClass(index, galleryImages.length);
-                  const isLarge = layoutClass.includes('row-span-2');
-                  
-                  return (
-                    <div class={`${layoutClass} group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]`}>
-                      <img
-                        src={`/gallery/${img}`}
-                        alt={`Gallery image ${index + 1}`}
-                        class={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${isLarge ? 'object-center' : 'object-cover'}`}
-                        loading={index < 4 ? 'eager' : 'lazy'}
-                      />
-                      
-                      {/* Overlay with subtle gradient */}
-                      <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      {/* Image number indicator */}
-                      <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-zinc-800 text-xs font-semibold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {index + 1}
-                      </div>
-                    </div>
-                  );
-                })}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-zinc-800 text-xs font-semibold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {index + 1}
               </div>
-            );
-          })()
-        }
+            </div>
+          ))}
+        </div>
       </div>
 
       <!-- Gallery Stats -->
       <div class="mt-12 text-center">
         <div class="inline-flex items-center gap-6 sm:gap-8 text-sm sm:text-base text-zinc-600">
           <div class="flex items-center gap-2">
-            <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
-            <span>{getGalleryImages().length} Photos</span>
-          </div>
+           
           <div class="flex items-center gap-2">
             <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
             <span>Daily Updates</span>
           </div>
+          
           <div class="flex items-center gap-2">
             <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
             <span>100% Real</span>
