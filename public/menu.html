@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SANDWEDGES - Menu</title>
+  <link rel="icon" href="/logo.jpg" sizes="32x32" type="image/jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            orange: '#F7931E'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-stone-50 text-zinc-900 antialiased">
+  <!-- Header -->
+  <header class="bg-white border-b border-zinc-200 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/" class="font-black text-xl tracking-tight" style="color: #F7931E;">SANDWEDGES</a>
+        <div class="bg-orange-100 px-3 py-1 rounded-full">
+          <span class="text-sm font-semibold text-orange-700">Table <span id="table-number">1</span></span>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <button onclick="toggleCart()" class="relative p-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Customer Info Section -->
+    <section class="bg-white rounded-xl p-6 mb-8 shadow-sm">
+      <h2 class="text-xl font-bold mb-4">Customer Information</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Your Name</label>
+          <input type="text" id="customer-name" placeholder="Enter your name" 
+                 class="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Contact Number (Optional)</label>
+          <input type="tel" id="customer-phone" placeholder="Enter your number" 
+                 class="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Categories -->
+    <section class="space-y-8">
+      <!-- Sandwiches -->
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <h3 class="text-2xl font-black mb-6" style="color: #F7931E;">🥪 Sandwiches</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Classic Veg Sandwich</h4>
+            <p class="text-sm text-zinc-600 mb-3">Fresh vegetables with special chutney</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹60</span>
+              <button onclick="addToCart('Classic Veg Sandwich', 60)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Cheese Sandwich</h4>
+            <p class="text-sm text-zinc-600 mb-3">Grilled cheese with veggies</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹80</span>
+              <button onclick="addToCart('Cheese Sandwich', 80)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Peri Peri Sandwich</h4>
+            <p class="text-sm text-zinc-600 mb-3">Spicy peri peri with grilled veggies</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹90</span>
+              <button onclick="addToCart('Peri Peri Sandwich', 90)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Burgers -->
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <h3 class="text-2xl font-black mb-6" style="color: #F7931E;">🍔 Burgers</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Veg Burger</h4>
+            <p class="text-sm text-zinc-600 mb-3">Classic veg patty with fresh veggies</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹70</span>
+              <button onclick="addToCart('Veg Burger', 70)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Cheese Burger</h4>
+            <p class="text-sm text-zinc-600 mb-3">Double cheese with veg patty</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹90</span>
+              <button onclick="addToCart('Cheese Burger', 90)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vadapao -->
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <h3 class="text-2xl font-black mb-6" style="color: #F7931E;">🍞 Vadapao</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Classic Vadapao</h4>
+            <p class="text-sm text-zinc-600 mb-3">Spicy vada with pav and chutney</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹40</span>
+              <button onclick="addToCart('Classic Vadapao', 40)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Cheese Vadapao</h4>
+            <p class="text-sm text-zinc-600 mb-3">Vadapao with extra cheese</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹60</span>
+              <button onclick="addToCart('Cheese Vadapao', 60)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shakes -->
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <h3 class="text-2xl font-black mb-6" style="color: #F7931E;">🥤 Shakes</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Vanilla Shake</h4>
+            <p class="text-sm text-zinc-600 mb-3">Creamy vanilla with ice cream</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹80</span>
+              <button onclick="addToCart('Vanilla Shake', 80)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Chocolate Shake</h4>
+            <p class="text-sm text-zinc-600 mb-3">Rich chocolate with ice cream</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹90</span>
+              <button onclick="addToCart('Chocolate Shake', 90)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Strawberry Shake</h4>
+            <p class="text-sm text-zinc-600 mb-3">Fresh strawberry shake</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹90</span>
+              <button onclick="addToCart('Strawberry Shake', 90)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Oreo Shake</h4>
+            <p class="text-sm text-zinc-600 mb-3">Crushed oreo with vanilla</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹100</span>
+              <button onclick="addToCart('Oreo Shake', 100)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fries -->
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <h3 class="text-2xl font-black mb-6" style="color: #F7931E;">🍟 Fries</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Regular Fries</h4>
+            <p class="text-sm text-zinc-600 mb-3">Crispy golden fries</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹50</span>
+              <button onclick="addToCart('Regular Fries', 50)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Peri Peri Fries</h4>
+            <p class="text-sm text-zinc-600 mb-3">Spicy peri peri seasoning</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹70</span>
+              <button onclick="addToCart('Peri Peri Fries', 70)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+          
+          <div class="border border-zinc-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h4 class="font-semibold mb-2">Cheese Fries</h4>
+            <p class="text-sm text-zinc-600 mb-3">Loaded with melted cheese</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">₹80</span>
+              <button onclick="addToCart('Cheese Fries', 80)" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                Add +
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Cart Sidebar -->
+  <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+    <div class="p-6 border-b border-zinc-200">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xl font-bold">Your Cart</h3>
+        <button onclick="toggleCart()" class="text-zinc-500 hover:text-zinc-700">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="flex-1 overflow-y-auto p-6" style="max-height: calc(100vh - 280px);">
+      <div id="cart-items" class="space-y-4">
+        <!-- Cart items will be added here -->
+      </div>
+    </div>
+    
+    <div class="border-t border-zinc-200 p-6">
+      <div class="mb-4">
+        <div class="flex justify-between mb-2">
+          <span>Subtotal:</span>
+          <span id="subtotal">₹0</span>
+        </div>
+        <div class="flex justify-between font-bold text-lg">
+          <span>Total:</span>
+          <span id="total">₹0</span>
+        </div>
+      </div>
+      
+      <!-- Payment Options -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-2">Payment Method</label>
+        <div class="space-y-2">
+          <label class="flex items-center">
+            <input type="radio" name="payment" value="counter" checked class="mr-2">
+            <span>Pay at Counter</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" name="payment" value="online" class="mr-2">
+            <span>Online Payment</span>
+          </label>
+        </div>
+      </div>
+      
+      <button onclick="placeOrder()" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-full transition-colors">
+        Place Order
+      </button>
+    </div>
+  </div>
+
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="toggleCart()"></div>
+
+  <script>
+    // Get table number from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tableNumber = urlParams.get('table') || '1';
+    document.getElementById('table-number').textContent = tableNumber;
+
+    // Cart management
+    let cart = [];
+    
+    function addToCart(name, price) {
+      const existingItem = cart.find(item => item.name === name);
+      
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({ name, price, quantity: 1 });
+      }
+      
+      updateCart();
+      showNotification(`${name} added to cart!`);
+    }
+    
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+    
+    function updateQuantity(index, change) {
+      cart[index].quantity += change;
+      if (cart[index].quantity <= 0) {
+        removeFromCart(index);
+      } else {
+        updateCart();
+      }
+    }
+    
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const cartCount = document.getElementById('cart-count');
+      const subtotal = document.getElementById('subtotal');
+      const total = document.getElementById('total');
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="text-zinc-500 text-center">Your cart is empty</p>';
+        cartCount.textContent = '0';
+        subtotal.textContent = '₹0';
+        total.textContent = '₹0';
+        return;
+      }
+      
+      let html = '';
+      let subtotalAmount = 0;
+      let totalItems = 0;
+      
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotalAmount += itemTotal;
+        totalItems += item.quantity;
+        
+        html += `
+          <div class="border border-zinc-200 rounded-lg p-4">
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-semibold">${item.name}</h4>
+              <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <button onclick="updateQuantity(${index}, -1)" class="w-8 h-8 rounded-full border border-zinc-300 hover:bg-zinc-100">-</button>
+                <span class="w-8 text-center">${item.quantity}</span>
+                <button onclick="updateQuantity(${index}, 1)" class="w-8 h-8 rounded-full border border-zinc-300 hover:bg-zinc-100">+</button>
+              </div>
+              <span class="font-semibold">₹${itemTotal}</span>
+            </div>
+          </div>
+        `;
+      });
+      
+      cartItems.innerHTML = html;
+      cartCount.textContent = totalItems;
+      subtotal.textContent = `₹${subtotalAmount}`;
+      total.textContent = `₹${subtotalAmount}`;
+    }
+    
+    function toggleCart() {
+      const sidebar = document.getElementById('cart-sidebar');
+      const overlay = document.getElementById('cart-overlay');
+      
+      sidebar.classList.toggle('translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+    
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+    
+    function placeOrder() {
+      const customerName = document.getElementById('customer-name').value;
+      const customerPhone = document.getElementById('customer-phone').value;
+      const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+      
+      if (!customerName) {
+        showNotification('Please enter your name!');
+        return;
+      }
+      
+      if (cart.length === 0) {
+        showNotification('Your cart is empty!');
+        return;
+      }
+      
+      const order = {
+        id: Date.now(),
+        tableNumber: tableNumber,
+        customerName: customerName,
+        customerPhone: customerPhone,
+        items: cart,
+        totalAmount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        paymentMethod: paymentMethod,
+        paymentStatus: paymentMethod === 'counter' ? 'pending' : 'paid',
+        orderStatus: 'preparing',
+        timestamp: new Date().toISOString()
+      };
+      
+      // Save order to localStorage
+      let orders = JSON.parse(localStorage.getItem('sandwedges_orders') || '[]');
+      orders.push(order);
+      localStorage.setItem('sandwedges_orders', JSON.stringify(orders));
+      
+      showNotification('Order placed successfully!');
+      
+      // Reset cart
+      cart = [];
+      updateCart();
+      toggleCart();
+      
+      // Clear form
+      document.getElementById('customer-name').value = '';
+      document.getElementById('customer-phone').value = '';
+    }
+    
+    // Initialize cart
+    updateCart();
+  </script>
+</body>
+</html>

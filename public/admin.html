@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SANDWEDGES - Admin Panel</title>
+  <link rel="icon" href="/logo.jpg" sizes="32x32" type="image/jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            orange: '#F7931E'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-stone-50 text-zinc-900 antialiased">
+  <!-- Header -->
+  <header class="bg-white border-b border-zinc-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/" class="font-black text-xl tracking-tight" style="color: #F7931E;">SANDWEDGES</a>
+        <span class="bg-red-100 px-3 py-1 rounded-full">
+          <span class="text-sm font-semibold text-red-700">Admin Panel</span>
+        </span>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <button onclick="refreshOrders()" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Refresh
+        </button>
+        <a href="/" class="px-4 py-2 border border-zinc-300 rounded-lg hover:bg-zinc-50 transition-colors">
+          Back to Site
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Stats Cards -->
+    <section class="grid md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-zinc-600 mb-1">Total Orders</p>
+            <p class="text-2xl font-bold" id="total-orders">0</p>
+          </div>
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-zinc-600 mb-1">Preparing</p>
+            <p class="text-2xl font-bold text-yellow-600" id="preparing-orders">0</p>
+          </div>
+          <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-zinc-600 mb-1">Ready</p>
+            <p class="text-2xl font-bold text-green-600" id="ready-orders">0</p>
+          </div>
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-zinc-600 mb-1">Total Revenue</p>
+            <p class="text-2xl font-bold" id="total-revenue">₹0</p>
+          </div>
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Orders Table -->
+    <section class="bg-white rounded-xl shadow-sm">
+      <div class="p-6 border-b border-zinc-200">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h2 class="text-xl font-bold">Orders</h2>
+          <div class="flex gap-2">
+            <button onclick="filterOrders('all')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-orange-500 text-white" data-filter="all">
+              All
+            </button>
+            <button onclick="filterOrders('preparing')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-zinc-100 text-zinc-700 hover:bg-zinc-200" data-filter="preparing">
+              Preparing
+            </button>
+            <button onclick="filterOrders('ready')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-zinc-100 text-zinc-700 hover:bg-zinc-200" data-filter="ready">
+              Ready
+            </button>
+            <button onclick="filterOrders('completed')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-zinc-100 text-zinc-700 hover:bg-zinc-200" data-filter="completed">
+              Completed
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-zinc-50 border-b border-zinc-200">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Order ID</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Time</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Table</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Customer</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Items</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Total</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Payment</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody" class="bg-white divide-y divide-zinc-200">
+            <!-- Orders will be populated here -->
+          </tbody>
+        </table>
+        
+        <div id="no-orders" class="hidden p-12 text-center">
+          <svg class="w-16 h-16 mx-auto text-zinc-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+          <p class="text-zinc-500">No orders found</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Order Details Modal -->
+  <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-zinc-200">
+        <div class="flex justify-between items-center">
+          <h3 class="text-xl font-bold">Order Details</h3>
+          <button onclick="closeOrderModal()" class="text-zinc-500 hover:text-zinc-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div id="order-details" class="p-6">
+        <!-- Order details will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let orders = [];
+    let currentFilter = 'all';
+
+    function loadOrders() {
+      orders = JSON.parse(localStorage.getItem('sandwedges_orders') || '[]');
+      orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      updateStats();
+      renderOrders();
+    }
+
+    function updateStats() {
+      const totalOrders = orders.length;
+      const preparingOrders = orders.filter(o => o.orderStatus === 'preparing').length;
+      const readyOrders = orders.filter(o => o.orderStatus === 'ready').length;
+      const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
+
+      document.getElementById('total-orders').textContent = totalOrders;
+      document.getElementById('preparing-orders').textContent = preparingOrders;
+      document.getElementById('ready-orders').textContent = readyOrders;
+      document.getElementById('total-revenue').textContent = `₹${totalRevenue}`;
+    }
+
+    function filterOrders(filter) {
+      currentFilter = filter;
+      
+      // Update filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.filter === filter) {
+          btn.className = 'filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-orange-500 text-white';
+        } else {
+          btn.className = 'filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-zinc-100 text-zinc-700 hover:bg-zinc-200';
+        }
+      });
+      
+      renderOrders();
+    }
+
+    function renderOrders() {
+      const tbody = document.getElementById('orders-tbody');
+      const noOrders = document.getElementById('no-orders');
+      
+      let filteredOrders = orders;
+      if (currentFilter !== 'all') {
+        filteredOrders = orders.filter(o => o.orderStatus === currentFilter);
+      }
+
+      if (filteredOrders.length === 0) {
+        tbody.innerHTML = '';
+        noOrders.classList.remove('hidden');
+        return;
+      }
+
+      noOrders.classList.add('hidden');
+      
+      tbody.innerHTML = filteredOrders.map(order => {
+        const date = new Date(order.timestamp);
+        const timeString = date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+        const dateString = date.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit' });
+        
+        const statusColors = {
+          preparing: 'bg-yellow-100 text-yellow-800',
+          ready: 'bg-green-100 text-green-800',
+          completed: 'bg-gray-100 text-gray-800'
+        };
+
+        const paymentColors = {
+          paid: 'bg-green-100 text-green-800',
+          pending: 'bg-yellow-100 text-yellow-800'
+        };
+
+        return `
+          <tr class="hover:bg-zinc-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">#${order.id}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <div>${dateString}</div>
+              <div class="text-zinc-500">${timeString}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">Table ${order.tableNumber}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <div class="font-medium">${order.customerName}</div>
+              ${order.customerPhone ? `<div class="text-zinc-500">${order.customerPhone}</div>` : ''}
+            </td>
+            <td class="px-6 py-4 text-sm">
+              <div class="max-w-xs">
+                ${order.items.map(item => `${item.name} x${item.quantity}`).join(', ')}
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">₹${order.totalAmount}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full ${paymentColors[order.paymentStatus]}">
+                ${order.paymentStatus === 'paid' ? 'Paid' : 'Pay at Counter'}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full ${statusColors[order.orderStatus]}">
+                ${order.orderStatus.charAt(0).toUpperCase() + order.orderStatus.slice(1)}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <button onclick="viewOrder(${order.id})" class="text-orange-600 hover:text-orange-900 mr-3">View</button>
+              ${order.orderStatus !== 'completed' ? `
+                <button onclick="updateOrderStatus(${order.id})" class="text-green-600 hover:text-green-900">
+                  ${order.orderStatus === 'preparing' ? 'Mark Ready' : 'Complete'}
+                </button>
+              ` : ''}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function viewOrder(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return;
+
+      const modal = document.getElementById('order-modal');
+      const details = document.getElementById('order-details');
+      
+      const date = new Date(order.timestamp);
+      
+      details.innerHTML = `
+        <div class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="font-semibold mb-2">Order Information</h4>
+              <div class="space-y-2 text-sm">
+                <div><strong>Order ID:</strong> #${order.id}</div>
+                <div><strong>Date:</strong> ${date.toLocaleDateString('en-IN')}</div>
+                <div><strong>Time:</strong> ${date.toLocaleTimeString('en-IN')}</div>
+                <div><strong>Table:</strong> ${order.tableNumber}</div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold mb-2">Customer Information</h4>
+              <div class="space-y-2 text-sm">
+                <div><strong>Name:</strong> ${order.customerName}</div>
+                ${order.customerPhone ? `<div><strong>Phone:</strong> ${order.customerPhone}</div>` : ''}
+                <div><strong>Payment Method:</strong> ${order.paymentMethod === 'counter' ? 'Pay at Counter' : 'Online'}</div>
+                <div><strong>Payment Status:</strong> ${order.paymentStatus === 'paid' ? 'Paid' : 'Pending'}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold mb-2">Order Items</h4>
+            <div class="border border-zinc-200 rounded-lg overflow-hidden">
+              <table class="w-full">
+                <thead class="bg-zinc-50">
+                  <tr>
+                    <th class="px-4 py-2 text-left text-sm">Item</th>
+                    <th class="px-4 py-2 text-center text-sm">Quantity</th>
+                    <th class="px-4 py-2 text-right text-sm">Price</th>
+                    <th class="px-4 py-2 text-right text-sm">Total</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-200">
+                  ${order.items.map(item => `
+                    <tr>
+                      <td class="px-4 py-2 text-sm">${item.name}</td>
+                      <td class="px-4 py-2 text-sm text-center">${item.quantity}</td>
+                      <td class="px-4 py-2 text-sm text-right">₹${item.price}</td>
+                      <td class="px-4 py-2 text-sm text-right font-semibold">₹${item.price * item.quantity}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+                <tfoot class="bg-zinc-50">
+                  <tr>
+                    <td colspan="3" class="px-4 py-2 text-sm font-semibold text-right">Total:</td>
+                    <td class="px-4 py-2 text-sm font-bold text-right">₹${order.totalAmount}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          
+          <div class="flex gap-2">
+            ${order.orderStatus !== 'completed' ? `
+              <button onclick="updateOrderStatus(${order.id}); closeOrderModal();" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                ${order.orderStatus === 'preparing' ? 'Mark as Ready' : 'Mark as Completed'}
+              </button>
+            ` : ''}
+            <button onclick="closeOrderModal()" class="px-4 py-2 border border-zinc-300 rounded-lg hover:bg-zinc-50 transition-colors">
+              Close
+            </button>
+          </div>
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+    }
+
+    function closeOrderModal() {
+      document.getElementById('order-modal').classList.add('hidden');
+    }
+
+    function updateOrderStatus(orderId) {
+      const orderIndex = orders.findIndex(o => o.id === orderId);
+      if (orderIndex === -1) return;
+
+      const order = orders[orderIndex];
+      if (order.orderStatus === 'preparing') {
+        order.orderStatus = 'ready';
+      } else if (order.orderStatus === 'ready') {
+        order.orderStatus = 'completed';
+      }
+
+      localStorage.setItem('sandwedges_orders', JSON.stringify(orders));
+      loadOrders();
+    }
+
+    function refreshOrders() {
+      loadOrders();
+    }
+
+    // Auto-refresh every 30 seconds
+    setInterval(refreshOrders, 30000);
+
+    // Load orders on page load
+    loadOrders();
+  </script>
+</body>
+</html>

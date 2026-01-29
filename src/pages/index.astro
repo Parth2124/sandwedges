@@ -248,13 +248,25 @@ function getLayoutClass(index) {
         <div class="w-16 h-1 bg-white mx-auto"></div>
       </div>
       
-      <!-- Menu Image - Fully responsive with max constraints -->
-      <div class="flex justify-center px-4">
+      <!-- Menu Image and Scan Button -->
+      <div class="flex flex-col items-center px-4 space-y-6">
         <img 
           src="/menu.png" 
           alt="SANDWEDGES Menu" 
           class="w-full max-w-4xl h-auto rounded-xl sm:rounded-2xl shadow-lg"
         />
+        
+        <!-- Scan Me Button -->
+        <button 
+          id="scan-btn"
+          class="px-8 py-4 bg-white hover:bg-orange-100 text-orange-500 font-bold rounded-full transition-all duration-200 hover:scale-105 shadow-lg text-lg sm:text-xl flex items-center gap-3"
+          onclick="openScanner()"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+          </svg>
+          Scan Me
+        </button>
       </div>
     </div>
   </section>
@@ -519,6 +531,72 @@ function getLayoutClass(index) {
         }
       });
     });
+
+    // QR Scanner functionality
+    function openScanner() {
+      // Create modal overlay
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-gray-900">Scan QR Code</h3>
+            <button onclick="closeScanner()" class="text-gray-500 hover:text-gray-700">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="mb-4">
+            <video id="qr-video" class="w-full rounded-lg bg-black" autoplay muted playsinline></video>
+          </div>
+          
+          <div class="text-center">
+            <p class="text-sm text-gray-600 mb-4">Position QR code within the frame to scan</p>
+            <button onclick="simulateScan()" class="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition-colors">
+              Simulate Scan (Table 1)
+            </button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      // Try to access camera
+      const video = document.getElementById('qr-video');
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+          .then(stream => {
+            video.srcObject = stream;
+          })
+          .catch(err => {
+            console.log('Camera access denied, using simulation');
+            video.style.display = 'none';
+          });
+      }
+    }
+
+    function closeScanner() {
+      const modal = document.querySelector('.fixed.inset-0');
+      if (modal) {
+        // Stop camera stream
+        const video = document.getElementById('qr-video');
+        if (video && video.srcObject) {
+          video.srcObject.getTracks().forEach(track => track.stop());
+        }
+        modal.remove();
+      }
+    }
+
+    function simulateScan() {
+      // Simulate QR scan with table number 1
+      const tableNumber = 1;
+      closeScanner();
+      
+      // Redirect to menu.html with table number
+      window.location.href = `menu.html?table=${tableNumber}`;
+    }
 
     </script>
 
